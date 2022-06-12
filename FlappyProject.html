@@ -1,0 +1,240 @@
+<html>
+	<head>
+		<style>
+		        #ma{
+					padding: 0px;
+					width: 50%;
+					height: 100%;
+					margin: auto;
+				}
+				
+				#d1, #d2{ 
+					width: 25%;
+					height: 100%;
+					z-index: 3;
+					position: fixed;
+					background-image: linear-gradient(#888, #222);
+				}
+				
+				#d2{
+					right: 0px;
+				}
+				
+				body{ 
+					overflow: hidden;
+				}
+				
+				#bg{
+					position: fixed;
+					height: 79.84%;
+					width:50%;
+				}
+				
+				#ground{ 
+					z-index: 2;
+					height:20.16%;
+					width: 100%;
+					position: fixed;
+					top: 79.7%;
+					left: 33.3089%;
+					animation-timing-function: linear; 
+					animation-iteration-count: infinite;
+					animation-name: move;
+					animation-duration: 0.5s;
+					animation-fill-mode: forwards;}
+				
+				@keyframes move{
+					0%{left: 25%;}
+					100%{left: 0;}
+				}
+				
+				#bird{  
+					height: 15%; width: 12%;
+					position: fixed;
+					right: 57%;
+					top: 45.28%;
+					animation-name: osc;
+					animation-duration: 0.6s;
+					animation-timing-function: linear;
+					animation-iteration-count: infinite;
+					z-index: 4;
+				}
+				
+				@keyframes osc{
+					0%{top: 43.68%;}
+				
+					50%{top:  46.88%;}
+					100%{top:43.68%;}
+				}
+				
+				
+				#a, #b {
+					position:fixed; 
+					width:8.052%;
+					z-index: 1;
+					right:0px;
+				}
+					 
+				#a {
+					bottom:0px;
+				}
+				
+				#b {
+					top:0px;
+				}	
+				
+				#tube1, #tube2{
+					width:100%;
+				}
+					
+					
+				#end{ 
+					left: 25%;
+					width: 50%;
+					top: 50%;
+					position: fixed;
+					z-index: 10;
+					transform: translateX(-50%);
+					transform: translateY(-50%);
+					display: none;
+					font-family: algerian;
+					text-shadow: 0 0 10px #222;
+					border:solid 3px #000;
+					border-radius: 12%;
+					background-color: rgba( 99, 00, 00, 0.5);
+					box-shadow: 0 3px 5px #600,
+								0 -3px 5px #600,
+								3px 0 5px #600,
+								-3px 0 5px #600;
+				}
+				
+				@font-face{
+					font-family: scorefont;
+					src: url(scorefont.woff);
+				}
+				
+				#score{ 
+					z-index: 10;
+					text-align: center;
+					top: 10%;
+					font-family: scorefont;
+					color: white;
+					text-shadow: -2px 2px 0 #000,
+								  2px 2px 0 #000,
+								  2px -2px 0 #000,
+								 -2px -2px 0 #000;
+					position: fixed;
+					left: 47%;
+				}
+	
+		</style>
+	</head>
+<body style="padding:0px; margin:0px;" >
+<div id="score"></div>
+<div id="end"> GAME OVER</div>
+<div id= "d1">
+
+</div>
+<div id= "d2">
+
+</div>
+
+<div id="ma">
+<div id= "a"><img id="tube1" src="https://i.ibb.co/NFy6RjT/tube1.png">
+</div>
+<div id= "b"><img id="tube2" src="https://i.ibb.co/B2QS32k/tube2.png">
+</div>
+		<img id="bg" src="https://i.ibb.co/XLKLCL4/bg.png">
+		<img id="ground" src="https://i.ibb.co/fSgGXhs/ground.png">
+				<img id="bird" src="https://i.ibb.co/Nxg6CN7/tenor1.gif">
+
+	</div>
+
+
+	
+
+<script>
+
+var a=0, b=0, c=0, d=document.body.clientWidth, f=d/100, y=Math.round(14.64*f); 
+var p=0, q=0,x;
+var g=document.body.clientHeight, i=g/100; 
+var a1=Math.round(45.28*i);
+const h=Math.round(67.68*i);
+console.log(g+"x"+d);
+document.getElementById("end").style.fontSize=Math.round(8.89*f);
+document.getElementById("score").style.fontSize=Math.round(8.89*f);
+document.addEventListener("keypress", myfunction); 
+
+function myfunction(){ document.addEventListener("keyup", myfunction1); 
+	document.getElementById("bird").style.animationName="down";
+	if (p==0){
+		document.getElementById("bird").style.transform="rotate(-20deg)";
+		a1-=Math.round(15*i);
+		document.getElementById("bird").style.top=a1;
+	}
+	
+	
+	if(a==0){a=1;
+		b=0;
+		setInterval(function(){drop();}, 25)
+		setInterval(function(){move();}, 25) 
+		var x=Math.round((Math.random()*45.255+21.742)*i);
+		document.getElementById("a").style.height=x;
+		document.getElementById("b").style.height=h-x;
+		document.getElementById("tube1").style.height=x;
+		document.getElementById("tube2").style.height=h-x;	}
+	
+		
+	
+}
+
+function myfunction1(){
+	document.getElementById("bird").style.transform="rotate(0deg)";
+
+	
+}
+
+function drop(){ var b1=y+Math.round(8.052*f); var c1=Math.round(60.5*f), c2=Math.round(65.5*f) ; var d1=parseInt(document.getElementById("tube2").style.height) ; 
+var e1= g-parseInt(document.getElementById("tube1").style.height)-Math.round(11*i);
+if (p==0){console.log(d1+"and"+e1+ "vs"+a1);
+	a1 += Math.round(0.8*i);
+	document.getElementById("bird").style.top=a1;
+
+	if(a1<=Math.round(11*i)){a1=Math.round(11*i); c++; console.log(c);}
+			if( a1>=Math.round(70.84*i) | (c1<=b1 & a1<=d1 & c2>=y ) | (c1<=b1 & a1>=e1 & c2>=y) ) {p=1;}
+	} else{ document.getElementById("ground").style.animationDuration="0s";
+	         document.getElementById("end").style.display="initial";
+			 document.getElementById("bird").style.display="none";
+			 
+			 }
+	
+
+}
+
+function move(){
+	if (p==0){
+		document.getElementById("a").style.right=y;
+		document.getElementById("b").style.right=y;
+		y+=Math.round(0.625*f); 
+		if (y>=Math.round(65*f) & y<=Math.round(65.625*f)){b++; document.getElementById("score").innerHTML=b;}
+	
+		if(y>=Math.round(75*f)){ bar();	} 
+	}	
+}
+
+function bar(){  y=Math.round(14.64*f); 
+		 x=Math.round((Math.random()*45.255+21.742)*i);
+		document.getElementById("a").style.height=x;
+		document.getElementById("b").style.height=h-x;
+		document.getElementById("tube1").style.height=x;
+		document.getElementById("tube2").style.height=h-x;
+		
+}
+document.getElementById("score").innerHTML=b;
+
+
+</script>
+
+
+</body>
+</html>
