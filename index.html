@@ -164,9 +164,11 @@ console.log(g+"x"+d);
 document.getElementById("end").style.fontSize=Math.round(8.89*f);
 document.getElementById("score").style.fontSize=Math.round(8.89*f);
 document.addEventListener("keypress", myfunction); 
-document.addEventListener("click", myfunction);
+document.addEventListener("touchstart", myfunction);
 
-function myfunction(){ document.addEventListener("keyup", myfunction1); 
+function myfunction(){ 
+	document.addEventListener("keyup", myfunction1);
+	document.addEventListener("ontouchend", myfunction1); 
 	document.getElementById("bird").style.animationName="down";
 	if (p==0){
 		document.getElementById("bird").style.transform="rotate(-20deg)";
