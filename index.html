@@ -120,10 +120,10 @@
 					top: 10%;
 					font-family: scorefont;
 					color: white;
-					text-shadow: -2px 2px 0 #000,
-								  2px 2px 0 #000,
-								  2px -2px 0 #000,
-								 -2px -2px 0 #000;
+					text-shadow: -4px 4px 0 #000,
+								  4px 4px 0 #000,
+								  4px -4px 0 #000,
+								 -4px -4px 0 #000;
 					position: fixed;
 					left: 47%;
 				}
@@ -157,85 +157,113 @@
 <script>
 
 var a=0, b=0, c=0, d=document.body.clientWidth, f=d/100, y=Math.round(14.64*f); 
-var p=0, q=0,x;
+var p=0, q=0,x,i1,i2;
 var g=document.body.clientHeight, i=g/100; 
 var a1=Math.round(45.28*i);
 const h=Math.round(67.68*i);
 console.log(g+"x"+d);
 document.getElementById("end").style.fontSize=Math.round(8.89*f);
 document.getElementById("score").style.fontSize=Math.round(8.89*f);
-document.addEventListener("keypress", myfunction); 
-document.addEventListener("touchstart", myfunction);
+document.addEventListener("keypress", birdUpr); 
+document.addEventListener("touchstart", birdUpr);
+document.getElementById("score").innerHTML=b;
 
-function myfunction(){ 
-	document.addEventListener("keyup", myfunction1);
-	document.addEventListener("touchend", myfunction1); 
-	document.getElementById("bird").style.animationName="down";
-	if (p==0){
-		document.getElementById("bird").style.animationPlayState='paused';
-		document.getElementById("bird").style.transform="rotate(-20deg)";
-		a1-=Math.round(15*i);
-		document.getElementById("bird").style.top=a1;
+function birdUpr(event){ 
+	if (event.keyCode!=13){
+		document.addEventListener("keyup", birdNiche);
+		document.addEventListener("touchend", birdNiche); 
+		document.getElementById("bird").style.animationName="down";
+		if (p==0){
+			document.getElementById("bird").style.animationPlayState='paused';
+			document.getElementById("bird").style.transform="rotate(-20deg)";
+			//------------Makeing _Upper_bound_of_Bird-----------//
+			if(a1<=Math.round(11*i)){
+				a1=Math.round(11*i); c++; console.log(c);
+			}
+			//----------Decrement_in_bird_Top--------------------//
+			a1-=Math.round(15*i);		
+			document.getElementById("bird").style.top=a1;
+		}
+		
+		if(a==0){
+			a=1;
+			i1=setInterval(function(){dropBird();}, 25)
+			i2=setInterval(function(){moveBar();}, 25) 
+			generateBar();
+		}
+	}else{
+		restart(event.keyCode);
 	}
 	
-	
-	if(a==0){a=1;
-		b=0;
-		setInterval(function(){drop();}, 25)
-		setInterval(function(){move();}, 25) 
-		var x=Math.round((Math.random()*45.255+21.742)*i);
-		document.getElementById("a").style.height=x;
-		document.getElementById("b").style.height=h-x;
-		document.getElementById("tube1").style.height=x;
-		document.getElementById("tube2").style.height=h-x;	}
-	
-		
-	
 }
-
-function myfunction1(){
+function restart(keyval){
+	if(keyval==13 & p==1){
+		p=0;a=0;b=0;
+		y=Math.round(14.64*f);
+		a1=Math.round(45.8*i);
+		document.getElementById("ground").style.animationDuration="0.5s";
+		document.getElementById("end").style.display="none";
+		document.getElementById("a").style.right=y;
+		document.getElementById("b").style.right=y;
+		document.getElementById('bird').style.top=45.8*i+'px';
+		document.getElementById("score").innerHTML=b;
+	}
+}
+function birdNiche(){
 	document.getElementById("bird").style.transform="rotate(0deg)";
 	document.getElementById("bird").style.animationPlayState='running';
 	
 }
+function gameOver(){
+	clearInterval(i1);clearInterval(i2);
+	document.getElementById("ground").style.animationDuration="0s";
+	document.getElementById("end").style.display="initial";
+	p=1;
+}	
 
-function drop(){ var b1=y+Math.round(8.052*f); var c1=Math.round(60.5*f), c2=Math.round(65.5*f) ; var d1=parseInt(document.getElementById("tube2").style.height) ; 
-var e1= g-parseInt(document.getElementById("tube1").style.height)-Math.round(11*i);
-if (p==0){console.log(d1+"and"+e1+ "vs"+a1);
+function dropBird(){ 
 	a1 += Math.round(0.8*i);
 	document.getElementById("bird").style.top=a1;
-
-	if(a1<=Math.round(11*i)){a1=Math.round(11*i); c++; console.log(c);}
-			if( a1>=Math.round(70.84*i) | (c1<=b1 & a1<=d1 & c2>=y ) | (c1<=b1 & a1>=e1 & c2>=y) ) {p=1;}
-	} else{ document.getElementById("ground").style.animationDuration="0s";
-	         document.getElementById("end").style.display="initial";
-			 document.getElementById("bird").style.display="none";
-			 
-			 }
-	
+	checks();
 
 }
 
-function move(){
-	if (p==0){
-		document.getElementById("a").style.right=y;
-		document.getElementById("b").style.right=y;
-		y+=Math.round(0.625*f); 
-		if (y>=Math.round(65*f) & y<=Math.round(65.625*f)){b++; document.getElementById("score").innerHTML=b;}
+function checks(){
+	var b1=y+Math.round(8.052*f); 
+	var c1=Math.round(60.5*f), c2=Math.round(65.5*f) ; 
+	var d1=parseInt(document.getElementById("tube2").style.height) ; 
+	var e1= g-parseInt(document.getElementById("tube1").style.height)-Math.round(11*i);
+	//------------GAME_OVER_CHECK-----------//
+	if( a1>=Math.round(70.84*i) | (c1<=b1 & a1<=d1 & c2>=y ) | (c1<=b1 & a1>=e1 & c2>=y) ) {
+		gameOver();
+	}
+	//------------SCORE_CHECK-----------//
+	if (y>=Math.round(65*f) & y<=Math.round(65.625*f)){
+		b++; 
+		document.getElementById("score").innerHTML=b;
+	}
 	
-		if(y>=Math.round(75*f)){ bar();	} 
-	}	
 }
 
-function bar(){  y=Math.round(14.64*f); 
-		 x=Math.round((Math.random()*45.255+21.742)*i);
+function moveBar(){
+	document.getElementById("a").style.right=y;
+	document.getElementById("b").style.right=y;
+	y+=Math.round(0.625*f); 
+
+	//------------Reviving_Bar-----------//
+	if(y>=Math.round(75*f)){ 
+		generateBar();
+	} 
+}
+
+function generateBar(){  
+		y=Math.round(14.64*f); 
+		x=Math.round((Math.random()*45.255+21.742)*i);
 		document.getElementById("a").style.height=x;
 		document.getElementById("b").style.height=h-x;
 		document.getElementById("tube1").style.height=x;
-		document.getElementById("tube2").style.height=h-x;
-		
+		document.getElementById("tube2").style.height=h-x;	
 }
-document.getElementById("score").innerHTML=b;
 
 
 </script>
