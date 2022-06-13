@@ -58,6 +58,7 @@
 					animation-timing-function: linear;
 					animation-iteration-count: infinite;
 					z-index: 4;
+					transition: top 0.1s;
 				}
 				
 				@keyframes osc{
@@ -171,6 +172,7 @@ function myfunction(){
 	document.addEventListener("touchend", myfunction1); 
 	document.getElementById("bird").style.animationName="down";
 	if (p==0){
+		document.getElementById("bird").style.animationPlayState='paused';
 		document.getElementById("bird").style.transform="rotate(-20deg)";
 		a1-=Math.round(15*i);
 		document.getElementById("bird").style.top=a1;
@@ -193,7 +195,7 @@ function myfunction(){
 
 function myfunction1(){
 	document.getElementById("bird").style.transform="rotate(0deg)";
-
+	document.getElementById("bird").style.animationPlayState='running';
 	
 }
 
